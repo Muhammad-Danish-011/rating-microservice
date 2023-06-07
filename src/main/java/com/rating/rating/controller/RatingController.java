@@ -26,8 +26,9 @@ import java.util.Collection;
     
         // posting Rating
         @PostMapping("/add")
-        public void addRating(@RequestBody Rating Rating) {
+        public Rating addRating(@RequestBody Rating Rating) {
             this.RatingRepository.save(Rating);
+            return Rating;
         }
     
         // Getting Rating with id
@@ -78,7 +79,6 @@ import java.util.Collection;
     
     //     }
     // }
-
 
 
 
