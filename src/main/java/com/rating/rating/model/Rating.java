@@ -20,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.micrometer.common.lang.NonNull;
 @Getter
 @Setter
@@ -32,8 +34,13 @@ public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
+
+
     @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Instant created ; 
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")    
     @CreationTimestamp
     private Instant updated;
     

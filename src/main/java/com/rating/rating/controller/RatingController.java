@@ -28,7 +28,8 @@ import java.util.Collection;
         @PostMapping("/add")
         public Rating addRating(@RequestBody Rating Rating) {
             this.RatingRepository.save(Rating);
-            return Rating;
+            return Rating
+            ;
         }
     
         // Getting Rating with id
