@@ -1,5 +1,5 @@
-package com.rating.rating;
+// package com.rating.rating;
 
-public enum mockMvc {
+// public enum mockMvc {
 
-}
+// }
