@@ -1,12 +1,15 @@
 package com.rating.rating.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.rating.rating.model.Rating;
 
 import com.rating.rating.repository.RatingRepository;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,6 +71,22 @@ public class RatingController {
             e.printStackTrace();
         }
     }
+    @GetMapping("/{id}")
+public ResponseEntity<Rating> getRatingById(@PathVariable Long id) {
+    try {
+        Optional<Rating> rating = RatingRepository.findById(id);
+        if (rating.isPresent()) {
+            return ResponseEntity.ok(rating.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
+
+
 }
     
     //     //Update a note with id
