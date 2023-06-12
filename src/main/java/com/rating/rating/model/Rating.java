@@ -37,10 +37,10 @@ public class Rating {
 
 
     @CreationTimestamp
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Instant created ; 
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")    
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")    
     @CreationTimestamp
     private Instant updated;
     

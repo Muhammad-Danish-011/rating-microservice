@@ -2,64 +2,73 @@ package com.rating.rating.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import com.rating.rating.model.Rating;
-    
+
 import com.rating.rating.repository.RatingRepository;
 import java.util.Collection;
-    import java.util.Optional;
-    
-    import org.springframework.http.ResponseEntity;
-    import org.springframework.web.bind.annotation.CrossOrigin;
-    import org.springframework.web.bind.annotation.DeleteMapping;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestBody;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RestController;
-    @CrossOrigin("*")
-    @RestController
-    @RequestMapping("/Rating")
-    public class RatingController {
-    
-        @Autowired
-        private RatingRepository RatingRepository;
-    
-        // posting Rating
-        @PostMapping("/add")
-        public Rating addRating(@RequestBody Rating Rating) {
+import java.util.Optional;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@CrossOrigin("*")
+@RestController
+@RequestMapping("/Rating")
+public class RatingController {
+
+    @Autowired
+    private RatingRepository RatingRepository;
+
+    // Posting Rating
+    @PostMapping("/add")
+    public Rating addRating(@RequestBody Rating Rating) {
+        try {
             this.RatingRepository.save(Rating);
-            return Rating
-            ;
-        }
-    
-        // Getting Rating with id
-    
-        // @GetMapping("/get")
-        // public ResponseEntity<Object> getRating(@RequestBody Rating rating) {
-        //     this.RatingRepository.findAll();
-        //     return ResponseEntity.ok(rating);
-        // }
-    
-        // Getting all Rating
-        @GetMapping("/all")
-        public Collection<Rating> getAllRating() {
-            return RatingRepository.findAll();
-        }
-    
-        // Delete a Rating with id
-        @DeleteMapping("/delete/{id}")
-        public void deleteRating(@PathVariable Long id) {
-            RatingRepository.deleteById(id);
-            
-        }
-        @DeleteMapping("/delete")
-        public void deleteRating() {
-            RatingRepository.deleteAll(getAllRating());;
-            
-    
+            return Rating;
+        } catch (Exception e) {
+            // Handle any exceptions
+            // You can log the error or return a custom response
+            e.printStackTrace();
+            return null;
         }
     }
 
+    // Getting all Rating
+    @GetMapping("/all")
+    public Collection<Rating> getAllRating() {
+        try {
+            return RatingRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Delete a Rating with id
+    @DeleteMapping("/delete/{id}")
+    public void deleteRating(@PathVariable Long id) {
+        try {
+            RatingRepository.deleteById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteRating() {
+        try {
+            RatingRepository.deleteAll(getAllRating());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
     
     //     //Update a note with id
     //     @PutMapping("/update")
