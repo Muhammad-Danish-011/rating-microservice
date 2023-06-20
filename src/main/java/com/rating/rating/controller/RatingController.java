@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/Rating")
+@RequestMapping("/rating")
 public class RatingController {
 
     @Autowired
