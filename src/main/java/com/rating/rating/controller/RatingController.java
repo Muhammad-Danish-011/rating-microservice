@@ -42,6 +42,21 @@ public class RatingController {
         }
     }
 
+    @GetMapping("/getbyappointment/{appointment}")
+    public ResponseEntity<List<Rating>> getAppointmentById(@PathVariable Long appointmentId) {
+        try {
+            List<Rating> appointments = this.RatingRepository.findByAppointmentId(appointmentId);
+            if (!appointments.isEmpty()) {
+                return ResponseEntity.ok(appointments);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     // Getting all Rating
     @GetMapping("/all")
     public Collection<Rating> getAllRating() {
