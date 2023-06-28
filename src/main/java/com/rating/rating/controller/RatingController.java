@@ -8,6 +8,7 @@ import com.rating.rating.model.Rating;
 import com.rating.rating.repository.RatingRepository;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
