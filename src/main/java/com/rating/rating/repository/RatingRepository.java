@@ -6,6 +6,6 @@ import com.rating.rating.model.Rating;
 
 public interface RatingRepository extends JpaRepository<Rating,Long> {
   
-  List<Availability> findByavailabilityId(Long availability_id);
+  List<Rating> findByAppointmentId(Long appointment_id);
 
 }
