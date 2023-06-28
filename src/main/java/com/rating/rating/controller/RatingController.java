@@ -42,7 +42,7 @@ public class RatingController {
         }
     }
 
-    @GetMapping("/getbyappointment/{appointment}")
+    @GetMapping("/getbyappointment/{appointmentId}")
     public ResponseEntity<List<Rating>> getAppointmentById(@PathVariable Long appointmentId) {
         try {
             List<Rating> appointments = this.RatingRepository.findByAppointmentId(appointmentId);
