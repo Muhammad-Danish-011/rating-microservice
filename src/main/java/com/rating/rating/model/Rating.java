@@ -45,7 +45,7 @@ public class Rating {
     private Instant updated;
     
     @NonNull
-    private Long appointment_id;
+    private Long appointmentId;
     private Long value ;
     private String note;
     
