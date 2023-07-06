@@ -46,7 +46,8 @@ public class Rating {
     
     @NonNull
     private Long appointmentId;
-    private float value ;
+
+    private Float value ;
     private String note;
     
 
