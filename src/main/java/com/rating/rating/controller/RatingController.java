@@ -50,7 +50,7 @@ public class RatingController {
             if (!appointments.isEmpty()) {
                 return ResponseEntity.ok(appointments);
             } else {
-                return ResponseEntity.noContent().build();
+                return ResponseEntity.ok(appointments);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,7 +94,7 @@ public ResponseEntity<Rating> getRatingById(@PathVariable Long id) {
         if (rating.isPresent()) {
             return ResponseEntity.ok(rating.get());
         } else {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(rating.get());
         }
     } catch (Exception e) {
         e.printStackTrace();
