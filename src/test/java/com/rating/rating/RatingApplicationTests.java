@@ -1,87 +1,102 @@
-// package com.rating.rating;
+package com.rating.rating;
 
-// import com.rating.rating.controller.RatingController;
-// import com.rating.rating.model.Rating;
-// import com.rating.rating.repository.RatingRepository;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.mockito.Mock;
-// import org.mockito.MockitoAnnotations;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
-// import java.util.Arrays;
-// import java.util.List;
-// import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-// class RatingControllerTest {
+import com.rating.rating.controller.RatingController;
+import com.rating.rating.model.Rating;
+import com.rating.rating.repository.RatingRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-//     private RatingController ratingController;
+@AutoConfigureJsonTesters
+@AutoConfigureMockMvc
+@SpringBootTest
+class RatingControllerTest {
 
-//     @Mock
-//     private RatingRepository ratingRepository;
+    @Autowired
+    private MockMvc mvc;
 
-//     @BeforeEach
-//     void setUp() {
-//         MockitoAnnotations.openMocks(this);
-//         ratingController = new RatingController();
-//         ratingController.setRatingRepository(ratingRepository);
-//     }
+    @Mock
+    private RatingRepository ratingRepository;
 
-//     @Test
-//     void addRating_ValidRating_ReturnsRating() {
-//         // Arrange
-//         Rating rating = new Rating();
-//         when(ratingRepository.save(rating)).thenReturn(rating);
+    @InjectMocks
+    private RatingController ratingController;
 
-//         // Act
-//         Rating result = ratingController.addRating(rating);
+    private JacksonTester<Rating> jsonRating;
+    private JacksonTester<List<Rating>> jsonRatings;
 
-//         // Assert
-//         assertEquals(rating, result);
-//         verify(ratingRepository, times(1)).save(rating);
-//     }
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        JacksonTester.initFields(this, new ObjectMapper().registerModule(new JavaTimeModule()));
+        mvc = MockMvcBuilders.standaloneSetup(ratingController).build();
+    }
 
-//     @Test
-//     void getAppointmentById_ValidAppointmentId_ReturnsAppointments() {
-//         // Arrange
-//         Long appointmentId = 1L;
-//         Rating rating = new Rating();
-//         List<Rating> appointments = Arrays.asList(rating);
-//         when(ratingRepository.findByAppointmentId(appointmentId)).thenReturn(appointments);
+    @Test
+    void testAddRating() throws Exception {
+        Rating rating = new Rating();
+        when(ratingRepository.save(rating)).thenReturn(rating);
 
-//         // Act
-//         ResponseEntity<List<Rating>> response = ratingController.getAppointmentById(appointmentId);
+        mvc.perform(MockMvcRequestBuilders.post("/rating/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRating.write(rating).getJson()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 
-//         // Assert
-//         assertEquals(HttpStatus.OK, response.getStatusCode());
-//         assertEquals(appointments, response.getBody());
-//         verify(ratingRepository, times(1)).findByAppointmentId(appointmentId);
-//     }
+    
 
-//     @Test
-//     void getAppointmentById_InvalidAppointmentId_ReturnsNoContent() {
-//         // Arrange
-//         Long appointmentId = 1L;
-//         when(ratingRepository.findByAppointmentId(appointmentId)).thenReturn(null);
+    @Test
+    void testGetAllRating() throws Exception {
+        List<Rating> ratings = new ArrayList<>();
+        ratings.add(new Rating());
+        ratings.add(new Rating());
 
-//         // Act
-//         ResponseEntity<List<Rating>> response = ratingController.getAppointmentById(appointmentId);
+        when(ratingRepository.findAll()).thenReturn(ratings);
 
-//         // Assert
-//         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-//         assertEquals(null, response.getBody());
-//         verify(ratingRepository, times(1)).findByAppointmentId(appointmentId);
-//     }
+        mvc.perform(MockMvcRequestBuilders.get("/rating/all")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+                
+    }
 
-//     // Add more tests for other methods in the controller
+    @Test
+    void testDeleteRating() throws Exception {
+        Long id = 1L;
 
-//     // Remember to test error cases and handle exceptions appropriately
+        doNothing().when(ratingRepository).deleteById(id);
 
-//     private void setRatingRepository(RatingRepository ratingRepository) {
-//         this.ratingRepository = ratingRepository;
-//     }
-// }
+        mvc.perform(MockMvcRequestBuilders.delete("/rating/delete/" + id))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void testDeleteAllRating() throws Exception {
+        doNothing().when(ratingRepository).deleteAll();
+
+        mvc.perform(MockMvcRequestBuilders.delete("/rating/delete"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+  
+}
