@@ -58,6 +58,18 @@ public class RatingController {
         }
     }
 
+
+    // Getting all Rating for DEG
+    @GetMapping("")
+    public Collection<Rating> getAllRatingForDeg() {
+        try {
+            return RatingRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // Getting all Rating
     @GetMapping("/all")
     public Collection<Rating> getAllRating() {
@@ -87,20 +99,39 @@ public class RatingController {
             e.printStackTrace();
         }
     }
-    @GetMapping("/{id}")
-public ResponseEntity<Rating> getRatingById(@PathVariable Long id) {
-    try {
-        Optional<Rating> rating = RatingRepository.findById(id);
-        if (rating.isPresent()) {
-            return ResponseEntity.ok(rating.get());
-        } else {
-            return ResponseEntity.ok(rating.get());
+
+
+
+    //for Deg
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Rating> getRatingByIdForDeg(@PathVariable Long id) {
+        try {
+            Optional<Rating> rating = RatingRepository.findById(id);
+            if (rating.isPresent()) {
+                return ResponseEntity.ok(rating.get());
+            } else {
+                return ResponseEntity.ok(rating.get());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-}
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Rating> getRatingById(@PathVariable Long id) {
+        try {
+            Optional<Rating> rating = RatingRepository.findById(id);
+            if (rating.isPresent()) {
+                return ResponseEntity.ok(rating.get());
+            } else {
+                return ResponseEntity.ok(rating.get());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
 }
